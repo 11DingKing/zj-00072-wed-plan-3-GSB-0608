@@ -8,7 +8,7 @@ import {
 import { User } from "./User";
 import { Wedding } from "./Wedding";
 
-export type ChangeEntityType = "wedding" | "budget" | "vendor";
+export type ChangeEntityType = "wedding" | "budget" | "vendor" | "schedule";
 
 @Entity()
 export class ChangeLog {
@@ -17,7 +17,7 @@ export class ChangeLog {
 
   @Column({
     type: "simple-enum",
-    enum: ["wedding", "budget", "vendor"],
+    enum: ["wedding", "budget", "vendor", "schedule"],
   })
   entityType!: ChangeEntityType;
 

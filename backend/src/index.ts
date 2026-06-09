@@ -18,6 +18,7 @@ import commentRoutes from "./routes/comment.routes";
 import fileRoutes from "./routes/file.routes";
 import changelogRoutes from "./routes/changelog.routes";
 import reportRoutes from "./routes/report.routes";
+import scheduleRoutes from "./routes/schedule.routes";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -37,6 +38,7 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/files", fileRoutes);
 app.use("/api/changelog", changelogRoutes);
 app.use("/api/report", reportRoutes);
+app.use("/api/schedule", scheduleRoutes);
 
 AppDataSource.initialize()
   .then(() => {

@@ -118,7 +118,29 @@ export interface FileAttachment {
   uploadedAt: string;
 }
 
-export type ChangeEntityType = "wedding" | "budget" | "vendor";
+export type ScheduleEventType =
+  | "仪式"
+  | "迎亲"
+  | "敬酒"
+  | "迎宾"
+  | "合影"
+  | "晚宴"
+  | "其他";
+
+export interface ScheduleEvent {
+  id: number;
+  title: string;
+  location?: string;
+  startTime: string;
+  endTime: string;
+  responsiblePerson?: string;
+  type: ScheduleEventType;
+  description?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type ChangeEntityType = "wedding" | "budget" | "vendor" | "schedule";
 
 export interface ChangeLog {
   id: number;
