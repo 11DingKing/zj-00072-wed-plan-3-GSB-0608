@@ -1,6 +1,22 @@
 import { defineStore } from "pinia";
-import { User, Wedding, Checklist, VendorBooking, Budget, DashboardStats } from "@/types";
-import { authAPI, weddingAPI, checklistAPI, vendorAPI, budgetAPI, statsAPI } from "@/api";
+import {
+  User,
+  Wedding,
+  Checklist,
+  VendorBooking,
+  Budget,
+  DashboardStats,
+  ScheduleEvent,
+} from "@/types";
+import {
+  authAPI,
+  weddingAPI,
+  checklistAPI,
+  vendorAPI,
+  budgetAPI,
+  statsAPI,
+  scheduleAPI,
+} from "@/api";
 
 interface AuthState {
   token: string | null;
@@ -107,12 +123,12 @@ export const useChecklistStore = defineStore("checklist", {
   getters: {
     tasksByPhase: (state) => {
       const groups: Record<string, Checklist[]> = {
-        "婚前12个月": [],
-        "婚前6个月": [],
-        "婚前3个月": [],
-        "婚前1个月": [],
-        "婚前1周": [],
-        "婚礼当天": [],
+        婚前12个月: [],
+        婚前6个月: [],
+        婚前3个月: [],
+        婚前1个月: [],
+        婚前1周: [],
+        婚礼当天: [],
       };
       state.checklists.forEach((task) => {
         groups[task.phase].push(task);
@@ -203,6 +219,48 @@ export const useStatsStore = defineStore("stats", {
       const response = await statsAPI.getDashboardStats();
       this.dashboard = response.data;
       return response.data;
+    },
+  },
+});
+
+interface ScheduleState {
+  events: ScheduleEvent[];
+}
+
+export const useScheduleStore = defineStore("schedule", {
+  state: (): ScheduleState => ({
+    events: [],
+  }),
+  actions: {
+    async fetchEvents() {
+      const response = await scheduleAPI.getEvents();
+      this.events = response.data;
+      return response.data;
+    },
+    async createEvent(data: any) {
+      const response = await scheduleAPI.createEvent(data);
+      this.events.push(response.data);
+      this.events.sort(
+        (a, b) =>
+          new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
+      );
+      return response.data;
+    },
+    async updateEvent(id: number, data: any) {
+      const response = await scheduleAPI.updateEvent(id, data);
+      const index = this.events.findIndex((e) => e.id === id);
+      if (index !== -1) {
+        this.events[index] = response.data;
+      }
+      this.events.sort(
+        (a, b) =>
+          new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
+      );
+      return response.data;
+    },
+    async deleteEvent(id: number) {
+      await scheduleAPI.deleteEvent(id);
+      this.events = this.events.filter((e) => e.id !== id);
     },
   },
 });
