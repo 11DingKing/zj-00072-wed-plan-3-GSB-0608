@@ -1,7 +1,7 @@
 <template>
   <div class="change-log-panel">
     <h4>变更历史</h4>
-    
+
     <div class="timeline" v-if="changeLogs.length > 0">
       <el-timeline>
         <el-timeline-item
@@ -12,7 +12,9 @@
         >
           <el-card shadow="hover" size="small">
             <div class="log-header">
-              <el-avatar :size="24">{{ log.modifiedBy.name.charAt(0) }}</el-avatar>
+              <el-avatar :size="24">{{
+                log.modifiedBy.name.charAt(0)
+              }}</el-avatar>
               <span class="log-author">{{ log.modifiedBy.name }}</span>
               <el-tag :type="getEntityTagType(log.entityType)" size="small">
                 {{ getEntityTypeName(log.entityType) }}
@@ -58,7 +60,7 @@ const loadChangeLogs = async () => {
   try {
     const response = await changelogAPI.getChangeLogs(
       props.entityType,
-      props.entityId
+      props.entityId,
     );
     changeLogs.value = response.data;
   } catch (error) {
@@ -71,6 +73,7 @@ const getEntityTypeName = (type: ChangeEntityType) => {
     wedding: "婚礼信息",
     budget: "预算",
     vendor: "供应商",
+    schedule: "日程",
   };
   return names[type] || type;
 };
@@ -80,6 +83,7 @@ const getEntityTagType = (type: ChangeEntityType) => {
     wedding: "success",
     budget: "warning",
     vendor: "primary",
+    schedule: "danger",
   };
   return types[type] || "info";
 };
@@ -128,7 +132,7 @@ watch(
   () => {
     loadChangeLogs();
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 
