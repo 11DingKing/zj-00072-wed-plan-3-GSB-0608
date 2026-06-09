@@ -12,6 +12,7 @@ import { VendorBooking } from "./VendorBooking";
 import { Budget } from "./Budget";
 import { FileAttachment } from "./FileAttachment";
 import { ChangeLog } from "./ChangeLog";
+import { ScheduleEvent } from "./ScheduleEvent";
 
 export type WeddingTheme = "中式" | "西式" | "户外" | "海岛" | "极简";
 
@@ -62,6 +63,9 @@ export class Wedding {
 
   @OneToMany(() => ChangeLog, (log) => log.wedding)
   changeLogs!: ChangeLog[];
+
+  @OneToMany(() => ScheduleEvent, (event) => event.wedding)
+  scheduleEvents!: ScheduleEvent[];
 
   @CreateDateColumn()
   createdAt!: Date;
