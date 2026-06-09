@@ -40,13 +40,18 @@
           <el-icon><TrendCharts /></el-icon>
           <span>数据统计</span>
         </el-menu-item>
+        <el-menu-item index="/schedule">
+          <el-icon><Calendar /></el-icon>
+          <span>当天日程</span>
+        </el-menu-item>
       </el-menu>
     </el-aside>
     <el-container>
       <el-header class="header">
         <div class="header-left">
           <h3 v-if="weddingStore.wedding">
-            {{ weddingStore.wedding.groomName }} & {{ weddingStore.wedding.brideName }} 的婚礼
+            {{ weddingStore.wedding.groomName }} &
+            {{ weddingStore.wedding.brideName }} 的婚礼
           </h3>
         </div>
         <div class="header-right">

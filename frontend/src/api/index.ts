@@ -15,13 +15,18 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    console.log("API Request:", config.method?.toUpperCase(), config.url, config.data);
+    console.log(
+      "API Request:",
+      config.method?.toUpperCase(),
+      config.url,
+      config.data,
+    );
     return config;
   },
   (error) => {
     console.error("Request Error:", error);
     return Promise.reject(error);
-  }
+  },
 );
 
 api.interceptors.response.use(
@@ -44,7 +49,7 @@ api.interceptors.response.use(
       ElMessage.error("请求失败，请稍后重试");
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export const authAPI = {
@@ -86,24 +91,29 @@ export const statsAPI = {
 
 export const commentAPI = {
   getComments: (checklistId: number) => api.get(`/comments/${checklistId}`),
-  createComment: (checklistId: number, data: any) => api.post(`/comments/${checklistId}`, data),
+  createComment: (checklistId: number, data: any) =>
+    api.post(`/comments/${checklistId}`, data),
   deleteComment: (id: number) => api.delete(`/comments/${id}`),
 };
 
 export const fileAPI = {
-  getFiles: (entityType: string, entityId?: number) => 
-    entityId ? api.get(`/files/${entityType}/${entityId}`) : api.get(`/files/${entityType}`),
-  uploadFile: (entityType: string, entityId: number | undefined, data: any) => 
-    entityId ? api.post(`/files/${entityType}/${entityId}`, data) : api.post(`/files/${entityType}`, data),
+  getFiles: (entityType: string, entityId?: number) =>
+    entityId
+      ? api.get(`/files/${entityType}/${entityId}`)
+      : api.get(`/files/${entityType}`),
+  uploadFile: (entityType: string, entityId: number | undefined, data: any) =>
+    entityId
+      ? api.post(`/files/${entityType}/${entityId}`, data)
+      : api.post(`/files/${entityType}`, data),
   deleteFile: (id: number) => api.delete(`/files/${id}`),
 };
 
 export const changelogAPI = {
-  getChangeLogs: (entityType?: string, entityId?: number) => 
-    entityType && entityId 
-      ? api.get(`/changelog/${entityType}/${entityId}`) 
-      : entityType 
-        ? api.get(`/changelog/${entityType}`) 
+  getChangeLogs: (entityType?: string, entityId?: number) =>
+    entityType && entityId
+      ? api.get(`/changelog/${entityType}/${entityId}`)
+      : entityType
+        ? api.get(`/changelog/${entityType}`)
         : api.get("/changelog"),
 };
 
@@ -115,6 +125,15 @@ export const reportAPI = {
     const query = params.toString();
     return api.get(`/report${query ? `?${query}` : ""}`);
   },
+};
+
+export const scheduleAPI = {
+  getScheduleEvents: () => api.get("/schedule"),
+  getScheduleEvent: (id: number) => api.get(`/schedule/${id}`),
+  createScheduleEvent: (data: any) => api.post("/schedule", data),
+  updateScheduleEvent: (id: number, data: any) =>
+    api.put(`/schedule/${id}`, data),
+  deleteScheduleEvent: (id: number) => api.delete(`/schedule/${id}`),
 };
 
 export default api;
